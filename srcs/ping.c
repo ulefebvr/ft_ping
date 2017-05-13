@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ping.h                                          :+:      :+:    :+:   */
+/*   ping.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/13 17:00:52 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/13 17:48:33 by ulefebvr         ###   ########.fr       */
+/*   Created: 2017/05/13 17:49:00 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/05/13 17:49:17 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PING_H
-# define FT_PING_H
+#include <stdio.h>
 
-# define OPTIONS		"vh"
-
-int		ft_ping(int options, char *destination);
-
-#endif
+int					ft_ping(int options, char *destination)
+{
+	printf("%s\n", destination);
+	printf("v : %d\n", (options & 1) != 0);
+	printf("h : %d\n", (options & 2) != 0);
+	return (0);
+}
