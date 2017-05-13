@@ -6,7 +6,7 @@
 #    By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/26 18:52:01 by ulefebvr          #+#    #+#              #
-#    Updated: 2017/05/13 16:59:47 by ulefebvr         ###   ########.fr        #
+#    Updated: 2017/05/13 17:36:34 by ulefebvr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ TARGET_EXEC ?= ft_ping
 
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./srcs
-INC_DIR ?= ./includes
+INC_DIR ?= ./includes ./lib/libft/includes ./lib/option/includes
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
@@ -27,7 +27,7 @@ CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
 
 # Extra flags to give to compilers when they are supposed to invoke the linker, ‘ld’, such as -L.
 # Libraries (-lfoo) should be added to the LDLIBS variable instead.
-LDFLAGS ?= 
+LDFLAGS ?= -Llib/option -loption -Llib/libft -lft
 
 all: $(TARGET_EXEC) $(OBJS)
 
