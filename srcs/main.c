@@ -6,7 +6,7 @@
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/13 17:00:46 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/14 18:02:43 by ulefebvr         ###   ########.fr       */
+/*   Updated: 2017/05/20 17:27:06 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void				usage(void)
+void		usage(void)
 {
 	dprintf(2, "%s\n", "./ft_ping [vh] destination");
 }
 
-int					get_option(int ac, char **av, int *opt)
+int			get_option(int ac, char **av, int *opt)
 {
 	int				ch;
 	t_arguments		args;
@@ -32,31 +32,35 @@ int					get_option(int ac, char **av, int *opt)
 	while ((ch = option_getopt(&args, OPTIONS)) != -1)
 	{
 		if (ch == '?')
-		{
-			usage();
 			return (-1);
-		}
 		*opt |= 1 << (ft_strchr(OPTIONS, ch) - OPTIONS);
 	}
 	return (0);
 }
 
-int					main(int ac, char **av)
+void		initiate_env(void)
 {
-	int				opt;
+	ft_bzero(&env, sizeof(t_env));
+	env.datalen = DEFDATALEN;
+	env.ident = getpid();
+}
 
-	opt = 0;
+int			main(int ac, char **av)
+{
 	if (getuid() != 0)
 	{
 		dprintf(2, "%s\n", "Need root privilege to execute.");
 		return (EXIT_FAILURE);
 	}
+	initiate_env();
 	if (ac < 2
-		|| (get_option(ac, av, &opt) == -1
+		|| (get_option(ac, av, &env.options) == -1
 		|| (ac - g_option_optind) != 1))
 	{
 		usage();
 		return (EXIT_FAILURE);
 	}
-	return (ft_ping(opt, *(av + g_option_optind)));
+	handle_signal();
+	env.destination = *(av + g_option_optind);
+	return (ft_ping());
 }

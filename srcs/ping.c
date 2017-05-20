@@ -6,21 +6,40 @@
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/13 17:49:00 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/14 18:01:52 by ulefebvr         ###   ########.fr       */
+/*   Updated: 2017/05/16 18:28:59 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
 #include "ft_ping.h"
 
-int					ft_ping(int options, char *destination)
-{
-	printf("%s\n", destination);
-	printf("v : %d\n", (options & OPT_V) != 0);
-	printf("h : %d\n", (options & OPT_H) != 0);
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-	char *ip = ping_getipfromadress(destination);
-	printf("%s --> %s\n", destination, ip);
+int		ft_ping(void)
+{
+	int				status;
+	t_addrinfo		*tmp;
+
+	tmp = NULL;
+	env.socket = createsocket();
+	ping_getaddrinfo(env.destination, &(env.hints), &(env.res));
+	tmp = env.res;
+	while (tmp)
+	{
+		if (tmp->ai_family == AF_INET)
+			status = ping4(tmp);
+		else if (tmp->ai_family == AF_INET6)
+			break;
+		else
+		{
+			dprintf(2, "ft_ping: "
+				"unknown protocol family: %d\n", tmp->ai_family);
+			exit(2);
+		}
+		if (status == 0)
+			break;
+		tmp = tmp->ai_next;
+	}
 	return (0);
 }

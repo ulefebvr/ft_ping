@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ping_getip.c                                       :+:      :+:    :+:   */
+/*   ping_getaddrinfo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/14 17:18:48 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/16 18:26:15 by ulefebvr         ###   ########.fr       */
+/*   Created: 2017/05/16 17:42:30 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/05/16 18:25:51 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,13 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
-char		*ping_getipfromadress(char *destination)
+int		ping_getaddrinfo(char *dest, t_addrinfo *hints, t_addrinfo **res)
 {
-	struct addrinfo		hints;
-	struct addrinfo		*res;
-	struct sockaddr_in	*sa_in;
-	char				ip_share[ADDRSTRLEN];
-
-	ft_bzero(&hints, sizeof(hints));
-	hints.ai_family = AF_INET;
-	if (getaddrinfo(destination, NULL, &hints, &res) != 0)
+	hints->ai_family = AF_INET;
+	if (getaddrinfo(dest, NULL, hints, res) != 0)
 	{
 		dprintf(2, "Error: %s\n", "Getaddrinfo fail.");
-		return (NULL);
-	}
-	sa_in = (struct sockaddr_in *)res->ai_addr;
-	inet_ntop(res->ai_family, &(sa_in->sin_addr), ip_share, ADDRSTRLEN);
-	if (ft_strlen(ip_share) == 0)
-	{
-		dprintf(2, "%s %s\n", "ping: unknown host", destination);
 		exit(2);
 	}
-	return (ft_strdup(ip_share));
+	return (0);
 }
