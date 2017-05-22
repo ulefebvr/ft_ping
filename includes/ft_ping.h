@@ -6,7 +6,7 @@
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/13 17:00:52 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/20 20:31:20 by ulefebvr         ###   ########.fr       */
+/*   Updated: 2017/05/22 18:58:05 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@
 typedef struct addrinfo	t_addrinfo;
 typedef struct timeval	t_timeval;
 
+
+
+typedef struct			s_funcset
+{
+	int 				(*send_probe)(int , void *, unsigned);
+}						t_funcset;
+
 typedef struct			s_env
 {
 	//OPTIONS
@@ -51,12 +58,19 @@ typedef struct			s_env
 	int					datalen;
 	int					optlen;
 	t_timeval			start_time;
+\
+	int					exiting;
+	int					npackets;
+	int					nreceived;
+	int					nerrors;
+	int					deadline;
 }						t_env;
 
 t_env	env;
 
 void	handle_signal(void);
 void	ping_setup_socket(int socket);
+void	ping_looping(t_funcset *set, int socket, unsigned char *pack, int len);
 
 int		createsocket(void);
 int		ping_getaddrinfo(char *dest, t_addrinfo *hints, t_addrinfo **res);

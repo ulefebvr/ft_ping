@@ -6,13 +6,14 @@
 /*   By: ulefebvr <ulefebvr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 18:15:47 by ulefebvr          #+#    #+#             */
-/*   Updated: 2017/05/20 20:50:10 by ulefebvr         ###   ########.fr       */
+/*   Updated: 2017/05/22 15:24:57 by ulefebvr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 void	display_ping4(t_addrinfo *ai)
 {
@@ -38,6 +39,6 @@ int		ping4(t_addrinfo *ai)
 		dprintf(2, "Error: %s\n", "ft_ping out of memory");
 		exit(2);
 	}
-	ping_looping(&(t_funset){}, env.socket, pack, packlen);
+	ping_looping(&(t_funcset){}, env.socket, pack, packlen);
 	return (0);
 }
